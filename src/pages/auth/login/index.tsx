@@ -51,6 +51,7 @@ export const LoginPage = () => {
               fullWidth
               size={"small"}
               {...register("login")}
+              error={!!errors.login}
             />
             {errors.login && (
               <span className={styles.warning}>{errors.login.message}</span>
@@ -72,6 +73,7 @@ export const LoginPage = () => {
                 ),
               }}
               {...register("password")}
+              error={!!errors.password}
             />
             {errors.password && (
               <span className={styles.warning}>{errors.password.message}</span>
