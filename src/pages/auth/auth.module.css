@@ -1,4 +1,4 @@
-.loginContainer {
+.formContainer {
   background-color: white;
   position: relative;
   z-index: 2;
@@ -52,7 +52,6 @@
   z-index: 1;
   background:
     linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../../../assets/background.jpg") no-repeat center;
+    url("../../assets/background.jpg") no-repeat center;
   background-size: cover;
-
 }

@@ -1,3 +1,8 @@
+import styles from "../auth.module.css";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   IconButton,
@@ -5,20 +10,16 @@ import {
   Link,
   TextField,
 } from "@mui/material";
-import styles from "../auth.module.css";
-import { useNavigate } from "react-router-dom";
-import { useCallback, useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { SubmitHandler, useForm } from "react-hook-form";
 import {
-  LoginFormType,
-  loginFormSchema,
-} from "../../../entities/loginForm/types.ts";
-import { zodResolver } from "@hookform/resolvers/zod";
+  registerFormSchema,
+  RegisterFormType,
+} from "../../../entities/registerForm/types.ts";
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
   const [isShowPass, setIsShowPass] = useState(false);
+  const [isShowConfirmPass, setIsShowConfirmPass] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,25 +27,29 @@ export const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormType>({
-    resolver: zodResolver(loginFormSchema),
+  } = useForm<RegisterFormType>({
+    resolver: zodResolver(registerFormSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginFormType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<RegisterFormType> = (data) => console.log(data);
 
-  const forgotPassHandler = useCallback(() => {
-    navigate("/auth/register");
+  const alreadyHaveAccountHandler = useCallback(() => {
+    navigate("/auth/login");
   }, [navigate]);
 
   const setIsShowPassHandler = useCallback(() => {
     setIsShowPass(!isShowPass);
   }, [isShowPass, setIsShowPass]);
 
+  const setIsShowConfirmPassHandler = useCallback(() => {
+    setIsShowConfirmPass(!isShowConfirmPass);
+  }, [isShowConfirmPass, setIsShowConfirmPass]);
+
   return (
     <div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div>Авторизация</div>
+          <div>Регистрация</div>
           <div className={styles.login}>
             <TextField
               label={"Логин"}
@@ -79,15 +84,43 @@ export const LoginPage = () => {
               <span className={styles.warning}>{errors.password.message}</span>
             )}
           </div>
+          <div className={styles.pass}>
+            <TextField
+              label={"Подтвердите пароль"}
+              fullWidth
+              size={"small"}
+              type={isShowConfirmPass ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={setIsShowConfirmPassHandler}>
+                      {isShowConfirmPass ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              {...register("confirmPassword")}
+              error={!!errors.password}
+            />
+            {errors.confirmPassword && (
+              <span className={styles.warning}>
+                {errors.confirmPassword.message}
+              </span>
+            )}
+          </div>
           <div className={styles.btnContainer}>
             <div className={styles.forgotPass}>
-              <Link onClick={forgotPassHandler} className={styles.link}>
-                Забыли пароль?
+              <Link onClick={alreadyHaveAccountHandler} className={styles.link}>
+                Уже есть аккаунт?
               </Link>
             </div>
             <div className={styles.btn}>
               <Button type={"submit"} variant={"contained"} fullWidth>
-                Войти
+                Зарегистрироваться
               </Button>
             </div>
           </div>
