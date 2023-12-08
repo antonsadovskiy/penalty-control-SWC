@@ -1,4 +1,4 @@
-import styles from "../auth.module.css";
+import styles from "./register.module.css";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -31,7 +31,9 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterFormType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<RegisterFormType> = (data) => {
+    console.log(data)
+  }
 
   const alreadyHaveAccountHandler = useCallback(() => {
     navigate("/auth/login");
@@ -49,69 +51,125 @@ export const RegisterPage = () => {
     <div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div>Регистрация</div>
-          <div className={styles.login}>
-            <TextField
-              label={"Логин"}
-              fullWidth
-              size={"small"}
-              {...register("login")}
-              error={!!errors.login}
-            />
-            {errors.login && (
-              <span className={styles.warning}>{errors.login.message}</span>
-            )}
-          </div>
-          <div className={styles.pass}>
-            <TextField
-              label={"Пароль"}
-              fullWidth
-              size={"small"}
-              type={isShowPass ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={setIsShowPassHandler}>
-                      {isShowPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              {...register("password")}
-              error={!!errors.password}
-            />
-            {errors.password && (
-              <span className={styles.warning}>{errors.password.message}</span>
-            )}
-          </div>
-          <div className={styles.pass}>
-            <TextField
-              label={"Подтвердите пароль"}
-              fullWidth
-              size={"small"}
-              type={isShowConfirmPass ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={setIsShowConfirmPassHandler}>
-                      {isShowConfirmPass ? (
-                        <VisibilityIcon />
-                      ) : (
-                        <VisibilityOffIcon />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              {...register("confirmPassword")}
-              error={!!errors.password}
-            />
-            {errors.confirmPassword && (
-              <span className={styles.warning}>
+          <div className={styles.label}>Регистрация</div>
+          <div className={styles.fieldsContainer}>
+            <div className={styles.userInfo}>
+              <div className={styles.field}>
+                <TextField
+                  label={"Фамилия"}
+                  fullWidth
+                  size={"small"}
+                  {...register("surname")}
+                  error={!!errors.surname}
+                />
+                {errors.surname && (
+                  <span className={styles.warning}>{errors.surname.message}</span>
+                )}
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  label={"Имя"}
+                  fullWidth
+                  size={"small"}
+                  {...register("firstname")}
+                  error={!!errors.firstname}
+                />
+                {errors.firstname && (
+                  <span className={styles.warning}>{errors.firstname.message}</span>
+                )}
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  label={"Отчество"}
+                  fullWidth
+                  size={"small"}
+                  {...register("middlename")}
+                  error={!!errors.middlename}
+                />
+                {errors.middlename && (
+                  <span className={styles.warning}>{errors.middlename.message}</span>
+                )}
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  label={"Номер автомобиля"}
+                  fullWidth
+                  size={"small"}
+                  {...register("carNumber")}
+                  error={!!errors.carNumber}
+                />
+                {errors.carNumber && (
+                  <span className={styles.warning}>{errors.carNumber.message}</span>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.authFields}>
+              <div className={styles.field}>
+                <TextField
+                  label={"Логин"}
+                  fullWidth
+                  size={"small"}
+                  {...register("login")}
+                  error={!!errors.login}
+                />
+                {errors.login && (
+                  <span className={styles.warning}>{errors.login.message}</span>
+                )}
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  label={"Пароль"}
+                  fullWidth
+                  size={"small"}
+                  type={isShowPass ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={setIsShowPassHandler}>
+                          {isShowPass ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("password")}
+                  error={!!errors.password}
+                />
+                {errors.password && (
+                  <span className={styles.warning}>{errors.password.message}</span>
+                )}
+              </div>
+              <div className={styles.field}>
+                <TextField
+                  label={"Подтвердите пароль"}
+                  fullWidth
+                  size={"small"}
+                  type={isShowConfirmPass ? "text" : "password"}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={setIsShowConfirmPassHandler}>
+                          {isShowConfirmPass ? (
+                            <VisibilityIcon/>
+                          ) : (
+                            <VisibilityOffIcon/>
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("confirmPassword")}
+                  error={!!errors.password}
+                />
+                {errors.confirmPassword && (
+                  <span className={styles.warning}>
                 {errors.confirmPassword.message}
               </span>
-            )}
+                )}
+              </div>
+            </div>
           </div>
+
           <div className={styles.btnContainer}>
             <div className={styles.forgotPass}>
               <Link onClick={alreadyHaveAccountHandler} className={styles.link}>
