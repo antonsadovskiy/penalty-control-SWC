@@ -1,18 +1,40 @@
-import axios from "axios";
 import { LoginFormType } from "../../entities/loginForm/types.ts";
-
-const baseURL = "https://172.20.10.3:3000";
+import { RegisterFormType } from "../../entities/registerForm/types.ts";
 
 export class Api {
-  public static readonly axios = axios.create({
-    baseURL: baseURL,
-  });
-
   public static async login(data: LoginFormType) {
     try {
-      const response = await Api.axios.get("/auth/login", { data });
+      await fetch("http://localhost:3000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, type: "LOGIN" }),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("Ошибка:", error);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
-      return response.data;
+  public static async register(data: RegisterFormType) {
+    try {
+      await fetch("http://localhost:3000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ...data, type: "REGISTER" }),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          // Обработка ошибки
+          console.error("Ошибка:", error);
+        });
     } catch (e) {
       console.error(e);
     }

@@ -16,9 +16,16 @@ import {
   LoginFormType,
 } from "../../../entities/loginForm/types.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLogin } from "../../../shared/api/hooks";
+import { handlePassword } from "../../../shared/services/strings.services.ts";
+import { useTranslation } from "react-i18next";
 
 export const LoginPage = () => {
+  const { t } = useTranslation("auth");
+
   const [isShowPass, setIsShowPass] = useState(false);
+
+  const { loginHandler } = useLogin();
 
   const navigate = useNavigate();
 
@@ -31,31 +38,14 @@ export const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
-    console.log(data);
-    fetch("http://localhost:3000", {
-      method: "POST", // или 'GET', 'PUT', 'DELETE' и т.д.
-      headers: {
-        "Content-Type": "application/json", // или другой тип данных, если необходимо
-        // Дополнительные заголовки, если необходимо
-      },
-      body: JSON.stringify({
-        // Ваш объект данных для отправки на сервер
-        key1: "value1",
-        key2: "value2",
-        // ...
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Обработка ответа от сервера
-        console.log("Ответ от сервера:", data);
-      })
-      .catch((error) => {
-        // Обработка ошибки
-        console.error("Ошибка:", error);
+    try {
+      await loginHandler({
+        login: data.login,
+        password: handlePassword(data.password),
       });
-
-    /* await loginHandler(data);*/
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const forgotPassHandler = useCallback(() => {
@@ -70,10 +60,10 @@ export const LoginPage = () => {
     <div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div className={styles.label}>Авторизация</div>
+          <div className={styles.label}>{t("loginFormLabel")}</div>
           <div className={styles.login}>
             <TextField
-              label={"Логин"}
+              label={t("login")}
               fullWidth
               size={"small"}
               {...register("login")}
@@ -85,7 +75,7 @@ export const LoginPage = () => {
           </div>
           <div className={styles.pass}>
             <TextField
-              label={"Пароль"}
+              label={t("password")}
               fullWidth
               size={"small"}
               type={isShowPass ? "text" : "password"}
@@ -108,12 +98,12 @@ export const LoginPage = () => {
           <div className={styles.btnContainer}>
             <div className={styles.forgotPass}>
               <Link onClick={forgotPassHandler} className={styles.link}>
-                Нет аккаунта?
+                {t("dontHaveAccount")}
               </Link>
             </div>
             <div className={styles.btn}>
               <Button type={"submit"} variant={"contained"} fullWidth>
-                Войти
+                {t("loginButton")}
               </Button>
             </div>
           </div>

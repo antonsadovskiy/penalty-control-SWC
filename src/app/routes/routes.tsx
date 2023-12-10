@@ -2,6 +2,8 @@ import { LoginPage } from "../../pages/auth/login";
 import { Layout } from "../layout";
 import { Route, Routes } from "react-router-dom";
 import { RegisterPage } from "../../pages/auth/register";
+import { MainPage } from "../../pages/main";
+import { LawPage } from "../../pages/law";
 
 export const App = () => {
   return (
@@ -10,8 +12,8 @@ export const App = () => {
         <Route path={`/auth/login`} element={<LoginPage />} index />
         <Route path={`/auth/register`} element={<RegisterPage />} />
 
-        <Route path={`/main`} element={<div>главная</div>} />
-        <Route path={`/law`} element={<div>законодательство</div>} />
+        <Route path={`/main`} element={<MainPage />} />
+        <Route path={`/law`} element={<LawPage />} />
         <Route path={`/contacts`} element={<div>контакты</div>} />
         <Route path={`/me`} element={<div>лк</div>} />
       </Route>

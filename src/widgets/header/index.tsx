@@ -7,15 +7,19 @@ import GavelIcon from "@mui/icons-material/Gavel";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 import { ReactNode, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { SelectLanguage } from "../../features/select-language";
+import { useTranslation } from "react-i18next";
 
-const menuItems: { icon: ReactNode; label: string; link: string }[] = [
-  { icon: <HomeIcon />, label: "Главная", link: "/main" },
-  { icon: <GavelIcon />, label: "Законодательство", link: "/law" },
-  { icon: <ContactSupportIcon />, label: "Контакты", link: "/contacts" },
-  { icon: <AccountBoxIcon />, label: "Личный кабинет", link: "/me" },
+const menuItems: { icon: ReactNode; key: string; link: string }[] = [
+  { icon: <HomeIcon />, key: "mainPage", link: "/main" },
+  { icon: <GavelIcon />, key: "lawPage", link: "/law" },
+  { icon: <ContactSupportIcon />, key: "contactsPage", link: "/contacts" },
+  { icon: <AccountBoxIcon />, key: "lkPage", link: "/me" },
 ];
 
 export const Header = () => {
+  const { t } = useTranslation("navigation");
+
   const navigate = useNavigate();
 
   const navigateHandler = useCallback(
@@ -37,10 +41,11 @@ export const Header = () => {
               onClick={() => navigateHandler(item.link)}
             >
               {item.icon}
-              <Link underline={"none"}>{item.label}</Link>
+              <Link underline={"none"}>{t(item.key)}</Link>
             </div>
           ))}
         </div>
+        <SelectLanguage />
       </div>
     </div>
   );

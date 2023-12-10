@@ -16,8 +16,14 @@ import {
   registerFormSchema,
   RegisterFormType,
 } from "../../../entities/registerForm/types.ts";
+import { useTranslation } from "react-i18next";
+import { useRegister } from "../../../shared/api/hooks";
 
 export const RegisterPage = () => {
+  const { t } = useTranslation("auth");
+
+  const { registerHandler } = useRegister();
+
   const [isShowPass, setIsShowPass] = useState(false);
   const [isShowConfirmPass, setIsShowConfirmPass] = useState(false);
 
@@ -31,9 +37,13 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerFormSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterFormType> = (data) => {
-    console.log(data)
-  }
+  const onSubmit: SubmitHandler<RegisterFormType> = async (data) => {
+    try {
+      await registerHandler(data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const alreadyHaveAccountHandler = useCallback(() => {
     navigate("/auth/login");
@@ -51,55 +61,63 @@ export const RegisterPage = () => {
     <div>
       <div className={styles.formContainer}>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <div className={styles.label}>Регистрация</div>
+          <div className={styles.label}>{t("registerFormLabel")}</div>
           <div className={styles.fieldsContainer}>
             <div className={styles.userInfo}>
               <div className={styles.field}>
                 <TextField
-                  label={"Фамилия"}
+                  label={t("lastName")}
                   fullWidth
                   size={"small"}
                   {...register("surname")}
                   error={!!errors.surname}
                 />
                 {errors.surname && (
-                  <span className={styles.warning}>{errors.surname.message}</span>
+                  <span className={styles.warning}>
+                    {errors.surname.message}
+                  </span>
                 )}
               </div>
               <div className={styles.field}>
                 <TextField
-                  label={"Имя"}
+                  label={t("firstName")}
                   fullWidth
                   size={"small"}
                   {...register("firstname")}
                   error={!!errors.firstname}
                 />
                 {errors.firstname && (
-                  <span className={styles.warning}>{errors.firstname.message}</span>
+                  <span className={styles.warning}>
+                    {errors.firstname.message}
+                  </span>
                 )}
               </div>
               <div className={styles.field}>
                 <TextField
-                  label={"Отчество"}
+                  label={t("middleName")}
                   fullWidth
                   size={"small"}
                   {...register("middlename")}
                   error={!!errors.middlename}
                 />
                 {errors.middlename && (
-                  <span className={styles.warning}>{errors.middlename.message}</span>
+                  <span className={styles.warning}>
+                    {errors.middlename.message}
+                  </span>
                 )}
               </div>
               <div className={styles.field}>
                 <TextField
-                  label={"Номер автомобиля"}
+                  label={t("carNumber")}
                   fullWidth
                   size={"small"}
                   {...register("carNumber")}
                   error={!!errors.carNumber}
                 />
                 {errors.carNumber && (
-                  <span className={styles.warning}>{errors.carNumber.message}</span>
+                  <span className={styles.warning}>
+                    {errors.carNumber.message}
+                  </span>
                 )}
               </div>
             </div>
@@ -107,7 +125,7 @@ export const RegisterPage = () => {
             <div className={styles.authFields}>
               <div className={styles.field}>
                 <TextField
-                  label={"Логин"}
+                  label={t("login")}
                   fullWidth
                   size={"small"}
                   {...register("login")}
@@ -119,7 +137,7 @@ export const RegisterPage = () => {
               </div>
               <div className={styles.field}>
                 <TextField
-                  label={"Пароль"}
+                  label={t("password")}
                   fullWidth
                   size={"small"}
                   type={isShowPass ? "text" : "password"}
@@ -127,7 +145,11 @@ export const RegisterPage = () => {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton onClick={setIsShowPassHandler}>
-                          {isShowPass ? <VisibilityIcon/> : <VisibilityOffIcon/>}
+                          {isShowPass ? (
+                            <VisibilityIcon />
+                          ) : (
+                            <VisibilityOffIcon />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -136,12 +158,14 @@ export const RegisterPage = () => {
                   error={!!errors.password}
                 />
                 {errors.password && (
-                  <span className={styles.warning}>{errors.password.message}</span>
+                  <span className={styles.warning}>
+                    {errors.password.message}
+                  </span>
                 )}
               </div>
               <div className={styles.field}>
                 <TextField
-                  label={"Подтвердите пароль"}
+                  label={t("confirmPassword")}
                   fullWidth
                   size={"small"}
                   type={isShowConfirmPass ? "text" : "password"}
@@ -150,9 +174,9 @@ export const RegisterPage = () => {
                       <InputAdornment position="end">
                         <IconButton onClick={setIsShowConfirmPassHandler}>
                           {isShowConfirmPass ? (
-                            <VisibilityIcon/>
+                            <VisibilityIcon />
                           ) : (
-                            <VisibilityOffIcon/>
+                            <VisibilityOffIcon />
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -163,8 +187,8 @@ export const RegisterPage = () => {
                 />
                 {errors.confirmPassword && (
                   <span className={styles.warning}>
-                {errors.confirmPassword.message}
-              </span>
+                    {errors.confirmPassword.message}
+                  </span>
                 )}
               </div>
             </div>
@@ -173,12 +197,12 @@ export const RegisterPage = () => {
           <div className={styles.btnContainer}>
             <div className={styles.forgotPass}>
               <Link onClick={alreadyHaveAccountHandler} className={styles.link}>
-                Уже есть аккаунт?
+                {t("alreadyHaveAccount")}
               </Link>
             </div>
             <div className={styles.btn}>
               <Button type={"submit"} variant={"contained"} fullWidth>
-                Зарегистрироваться
+                {t("registerButton")}
               </Button>
             </div>
           </div>
