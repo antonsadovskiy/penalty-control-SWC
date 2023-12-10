@@ -17,7 +17,6 @@ import {
 } from "../../../entities/loginForm/types.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../../../shared/api/hooks";
-import { handlePassword } from "../../../shared/services/strings.services.ts";
 import { useTranslation } from "react-i18next";
 
 export const LoginPage = () => {
@@ -39,10 +38,7 @@ export const LoginPage = () => {
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
     try {
-      await loginHandler({
-        login: data.login,
-        password: handlePassword(data.password),
-      });
+      await loginHandler(data);
     } catch (e) {
       console.error(e);
     }

@@ -13,7 +13,6 @@ export class Api {
       })
         .then((response) => response.json())
         .catch((error) => {
-          // Обработка ошибки
           console.error("Ошибка:", error);
         });
     } catch (e) {
@@ -32,7 +31,24 @@ export class Api {
       })
         .then((response) => response.json())
         .catch((error) => {
-          // Обработка ошибки
+          console.error("Ошибка:", error);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  public static async getAllOffences() {
+    try {
+      return await fetch("http://localhost:3000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type: "GET_ALL_OFFENCES" }),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
           console.error("Ошибка:", error);
         });
     } catch (e) {
