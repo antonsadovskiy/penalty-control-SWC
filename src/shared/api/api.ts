@@ -4,7 +4,7 @@ import { RegisterFormType } from "../../entities/registerForm/types.ts";
 export class Api {
   public static async login(data: LoginFormType) {
     try {
-      await fetch("http://localhost:3000", {
+      return await fetch("http://localhost:3000", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export class Api {
 
   public static async register(data: RegisterFormType) {
     try {
-      await fetch("http://localhost:3000", {
+      return await fetch("http://localhost:3000", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

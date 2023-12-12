@@ -1,10 +1,13 @@
 import { LoginFormType } from "../../../entities/loginForm/types.ts";
 import { Api } from "../api.ts";
+import { LoginResponseType } from "../types.ts";
 
 export const useLogin = () => {
   const loginHandler = async (data: LoginFormType) => {
     try {
-      return await Api.login(data);
+      const response: LoginResponseType = await Api.login(data);
+
+      return response;
     } catch (e) {
       console.error(e);
     }

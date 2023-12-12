@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import { RegisterPage } from "../../pages/auth/register";
 import { MainPage } from "../../pages/main";
 import { LawPage } from "../../pages/law";
+import { LkPage } from "../../pages/lk";
 
 export const App = () => {
   return (
@@ -15,7 +16,7 @@ export const App = () => {
         <Route path={`/main`} element={<MainPage />} />
         <Route path={`/law`} element={<LawPage />} />
         <Route path={`/contacts`} element={<div>контакты</div>} />
-        <Route path={`/me`} element={<div>лк</div>} />
+        <Route path={`/me`} element={<LkPage />} />
       </Route>
     </Routes>
   );

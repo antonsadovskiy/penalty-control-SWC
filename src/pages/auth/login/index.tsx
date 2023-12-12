@@ -18,9 +18,15 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLogin } from "../../../shared/api/hooks";
 import { useTranslation } from "react-i18next";
+import { useUserInfoStore } from "../../../entities/userInfo/store.ts";
 
 export const LoginPage = () => {
   const { t } = useTranslation("auth");
+
+  const [setIsLoggedIn, setUserInfo] = useUserInfoStore((state) => [
+    state.setIsLoggedIn,
+    state.setUserInfo,
+  ]);
 
   const [isShowPass, setIsShowPass] = useState(false);
 
@@ -38,7 +44,21 @@ export const LoginPage = () => {
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
     try {
-      await loginHandler(data);
+      const res = await loginHandler(data);
+
+      if (res?.Status === "SUCCEDED") {
+        setIsLoggedIn(true);
+
+        setUserInfo({
+          CarNumber: res.CarNumber,
+          Firstname: res.Firstname,
+          Middlename: res.Middlename,
+          Surname: res.Surname,
+          Violations: res.Violations,
+        });
+
+        navigate("/me");
+      }
     } catch (e) {
       console.error(e);
     }

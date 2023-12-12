@@ -1,0 +1,25 @@
+.lkPage {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.userInfo {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+.name {
+  font-size: 20px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+    font-size: 20px;
+
+}
+.yourPenalties {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}

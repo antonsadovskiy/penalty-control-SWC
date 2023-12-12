@@ -1,6 +1,7 @@
-import styles from "./law.module.css";
 import { useEffect } from "react";
 import { useAllOffences } from "../../shared/api/hooks";
+import { ViolationsTable } from "../../entities/violationsTable";
+import { ViolationType } from "../../shared/api/types.ts";
 
 export const LawPage = () => {
   // const { t } = useTranslation("law");
@@ -22,24 +23,16 @@ export const LawPage = () => {
 
   // const array = Array.from({ length: 40 - 1 + 1 }, (_, index) => index + 1);
 
-  return (
-    <div className={styles.table}>
-      <div className={styles.headerRow}>
-        <div className={styles.text} style={{ fontWeight: "bold" }}>
-          Описание
-        </div>
-        <div className={styles.penalty} style={{ fontWeight: "bold" }}>
-          Штраф
-        </div>
-      </div>
-      {/*{array.map((item) => {
-        return (
-          <div className={styles.row}>
-            <div className={styles.text}>{t(`${item}_t`)}</div>
-            <div className={styles.penalty}>{t(`${item}_p`)}</div>
-          </div>
-        );
-      })}*/}
-    </div>
-  );
+  const array: ViolationType[] = [
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+    { ViolationId: 1, Article: "1", Paragraph: "1" },
+  ];
+
+  return <ViolationsTable violations={array} height={"88"} />;
 };

@@ -39,7 +39,11 @@ export const RegisterPage = () => {
 
   const onSubmit: SubmitHandler<RegisterFormType> = async (data) => {
     try {
-      await registerHandler(data);
+      const res = await registerHandler(data);
+
+      if (res?.Status === "SUCCEDED") {
+        navigate("/auth/login");
+      }
     } catch (e) {
       console.error(e);
     }

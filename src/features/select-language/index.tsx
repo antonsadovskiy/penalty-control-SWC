@@ -28,7 +28,7 @@ export function SelectLanguage() {
         disabled={changing}
       >
         <MenuItem value={"ru"}>Русский</MenuItem>
-        <MenuItem value={"en"}>Английский</MenuItem>
+        <MenuItem value={"en"}>English</MenuItem>
       </Select>
     </FormControl>
   );
