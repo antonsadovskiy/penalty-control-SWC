@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
+import { ViolationType } from "../../shared/api/types.ts";
 
 export type UserInfoType = {
   Surname: string;
   Firstname: string;
   Middlename: string;
   CarNumber: string | null;
-  Violations: { ViolationId: number; Article: string; Paragraph: string }[];
+  Violations: ViolationType[];
 };
 
 type UseUserInfoStoreState = {

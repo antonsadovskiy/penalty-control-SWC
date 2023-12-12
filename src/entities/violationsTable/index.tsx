@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { UseViolationsTable } from "../../shared/hooks/useViolationsTable.tsx";
 import { ViolationType } from "../../shared/api/types.ts";
+import { useTranslation } from "react-i18next";
 
 export type ViolationsTablePropsType = {
   violations: ViolationType[];
@@ -11,6 +12,8 @@ export const ViolationsTable = ({
   violations,
   height,
 }: ViolationsTablePropsType) => {
+  const { t } = useTranslation();
+
   const { columns, rows } = UseViolationsTable({ violations });
 
   return (
@@ -37,6 +40,9 @@ export const ViolationsTable = ({
         "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
           py: "15px",
         },
+      }}
+      localeText={{
+        noRowsLabel: t("noData"),
       }}
       disableRowSelectionOnClick
     />
