@@ -43,6 +43,13 @@ export const ViolationsTable = ({
       }}
       localeText={{
         noRowsLabel: t("noData"),
+        MuiTablePagination: {
+          labelDisplayedRows: ({ from, to, count }) => (
+            <span style={{ userSelect: "none" }}>
+              {from} - {to} {t("fromAll")} {count}
+            </span>
+          ),
+        },
       }}
       disableRowSelectionOnClick
     />

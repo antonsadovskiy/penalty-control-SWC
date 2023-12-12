@@ -1,10 +1,14 @@
 import { Api } from "../api.ts";
 import { ViolationType } from "../types.ts";
 
+export type OffencesResponseType = {
+  Violations: ViolationType[];
+};
+
 export const useAllOffences = () => {
   const getAllOffences = async () => {
     try {
-      const response: ViolationType[] = await Api.getAllOffences();
+      const response: OffencesResponseType = await Api.getAllOffences();
 
       return response;
     } catch (e) {

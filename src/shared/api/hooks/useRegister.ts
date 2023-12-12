@@ -1,11 +1,11 @@
 import { RegisterFormType } from "../../../entities/registerForm/types.ts";
 import { Api } from "../api.ts";
-import { RegisterResponseType } from "../types.ts";
+import { StatusType } from "../types.ts";
 
 export const useRegister = () => {
   const registerHandler = async (data: RegisterFormType) => {
     try {
-      const response: RegisterResponseType = await Api.register(data);
+      const response: StatusType = await Api.register(data);
 
       return response;
     } catch (e) {

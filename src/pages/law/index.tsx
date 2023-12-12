@@ -16,7 +16,7 @@ export const LawPage = () => {
       const res = await getAllOffences();
 
       if (res) {
-        setViolations(res);
+        setViolations(res.Violations);
       }
     } catch (e) {
       console.error(e);
