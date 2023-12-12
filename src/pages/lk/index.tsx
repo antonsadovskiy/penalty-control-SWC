@@ -3,11 +3,19 @@ import Avatar from "@mui/material/Avatar";
 import styles from "./lk.module.css";
 import { useTranslation } from "react-i18next";
 import { ViolationsTable } from "../../entities/violationsTable";
+import { Navigate } from "react-router-dom";
 
 export const LkPage = () => {
+  const [isLoggedIn, userInfo] = useUserInfoStore((state) => [
+    state.isLoggedIn,
+    state.userInfo,
+  ]);
+
   const { t } = useTranslation("lk");
 
-  const userInfo = useUserInfoStore((state) => state.userInfo);
+  if (!isLoggedIn) {
+    return <Navigate to={"/auth/login"} />;
+  }
 
   return (
     <div className={styles.lkPage}>

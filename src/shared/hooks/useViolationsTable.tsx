@@ -16,7 +16,7 @@ export const UseViolationsTable = ({ violations }: PropsType) => {
       width: 150,
       editable: true,
       renderCell: (params) => {
-        return <div>{`${params.row.Article}.${params.row.Paragraph}`}</div>;
+        return <div>{`18.${params.row.Article}.${params.row.Paragraph}`}</div>;
       },
       disableColumnMenu: true,
       sortable: false,
@@ -27,7 +27,7 @@ export const UseViolationsTable = ({ violations }: PropsType) => {
       width: 720,
       editable: true,
       renderCell: (params) => {
-        return <div>{t(`${params.row.ViolationId}_t`)}</div>;
+        return <div>{t(`${params.row.IdViolation}_t`)}</div>;
       },
       disableColumnMenu: true,
       sortable: false,

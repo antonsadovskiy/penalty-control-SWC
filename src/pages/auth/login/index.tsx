@@ -47,8 +47,6 @@ export const LoginPage = () => {
       const res = await loginHandler(data);
 
       if (res?.Status === "SUCCEDED") {
-        setIsLoggedIn(true);
-
         setUserInfo({
           CarNumber: res.CarNumber,
           Firstname: res.Firstname,
@@ -56,6 +54,8 @@ export const LoginPage = () => {
           Surname: res.Surname,
           Violations: res.Violations,
         });
+
+        setIsLoggedIn(true);
 
         navigate("/me");
       }

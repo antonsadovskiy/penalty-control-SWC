@@ -9,6 +9,7 @@ import { ReactNode, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { SelectLanguage } from "../../features/select-language";
 import { useTranslation } from "react-i18next";
+import { useUserInfoStore } from "../../entities/userInfo/store.ts";
 
 const menuItems: { icon: ReactNode; key: string; link: string }[] = [
   { icon: <HomeIcon />, key: "mainPage", link: "/main" },
@@ -18,6 +19,8 @@ const menuItems: { icon: ReactNode; key: string; link: string }[] = [
 ];
 
 export const Header = () => {
+  const isLoggedIn = useUserInfoStore((state) => state.isLoggedIn);
+
   const { t } = useTranslation("navigation");
 
   const navigate = useNavigate();
@@ -39,9 +42,18 @@ export const Header = () => {
               key={index}
               className={styles.menuItem}
               onClick={() => navigateHandler(item.link)}
+              style={{
+                pointerEvents: isLoggedIn ? "all" : "none",
+                color: isLoggedIn ? "" : "gray",
+              }}
             >
               {item.icon}
-              <Link underline={"none"}>{t(item.key)}</Link>
+              <Link
+                color={isLoggedIn ? "#1976d2" : "lightgray"}
+                underline={"none"}
+              >
+                {t(item.key)}
+              </Link>
             </div>
           ))}
         </div>
