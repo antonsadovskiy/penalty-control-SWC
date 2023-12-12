@@ -38,7 +38,7 @@ export const UseViolationsTable = ({ violations }: PropsType) => {
       width: 310,
       editable: true,
       renderCell: (params) => {
-        return <div>{t(`${params.row.ViolationId}_p`)}</div>;
+        return <div>{t(`${params.row.IdViolation}_p`)}</div>;
       },
       disableColumnMenu: true,
       sortable: false,

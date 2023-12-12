@@ -11,7 +11,7 @@ export type LoginResponseType = {
 } & StatusType;
 
 export type ViolationType = {
-  ViolationId: number;
+  IdViolation: number;
   Article: string;
   Paragraph: string;
 };
