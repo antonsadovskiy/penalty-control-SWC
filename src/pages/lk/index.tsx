@@ -30,12 +30,14 @@ export const LkPage = () => {
   const [region, setRegion] = useState(7);
 
   const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+
   const handleClose = () => {
     setRegisterNumber("");
     setSeries("");
     setRegion(7);
     setAddModalIsOpen(false);
   };
+
   const handleOpen = () => setAddModalIsOpen(true);
 
   const { addNewCarNumber } = useAddNewCarNumber();
@@ -108,17 +110,23 @@ export const LkPage = () => {
               {t(accountType)}
             </div>
             <div className={styles.carNumber}>
-              <span className={styles.boldText}>{t("carNumber")}: </span>
-              <FormControl size={"small"}>
-                <Select
-                  value={selectedCarNumber}
-                  onChange={(e) => changeCarNumberHandler(e.target.value)}
-                >
-                  {userInfo?.ViolationsInfo.map((info) => (
-                    <MenuItem value={info.CarNumber}>{info.CarNumber}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {userInfo && userInfo.ViolationsInfo.length > 0 && (
+                <>
+                  <span className={styles.boldText}>{t("carNumber")}: </span>
+                  <FormControl size={"small"}>
+                    <Select
+                      value={selectedCarNumber}
+                      onChange={(e) => changeCarNumberHandler(e.target.value)}
+                    >
+                      {userInfo?.ViolationsInfo.map((info) => (
+                        <MenuItem value={info.CarNumber}>
+                          {info.CarNumber}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>{" "}
+                </>
+              )}
             </div>
           </div>
           <div>
