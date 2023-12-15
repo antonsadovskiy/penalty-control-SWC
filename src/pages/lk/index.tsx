@@ -15,11 +15,14 @@ import {
 import { useState } from "react";
 import { ViolationsTable } from "../../entities/violationsTable";
 import AddBoxIcon from "@mui/icons-material/AddBox";
+import { useAddNewCarNumber } from "../../shared/api/hooks";
+import { InfoType } from "../../shared/api/types.ts";
 
 export const LkPage = () => {
-  const [isLoggedIn, userInfo] = useUserInfoStore((state) => [
+  const [isLoggedIn, userInfo, setUserInfo] = useUserInfoStore((state) => [
     state.isLoggedIn,
     state.userInfo,
+    state.setUserInfo,
   ]);
 
   const [registerNumber, setRegisterNumber] = useState("");
@@ -35,6 +38,8 @@ export const LkPage = () => {
   };
   const handleOpen = () => setAddModalIsOpen(true);
 
+  const { addNewCarNumber } = useAddNewCarNumber();
+
   const [selectedCarNumber, setSelectedCarNumber] = useState("8892КВ-7");
 
   const { t } = useTranslation("lk");
@@ -43,9 +48,35 @@ export const LkPage = () => {
     setSelectedCarNumber(carNumber);
   };
 
-  const addCarNumberHandler = () => {
+  const addCarNumberHandler = async () => {
     const fullNumber = `${registerNumber}${series}-${region}`;
-    console.log(fullNumber);
+
+    try {
+      if (userInfo) {
+        const newViolations: InfoType[] = [
+          ...userInfo.ViolationsInfo,
+          { CarNumber: fullNumber, Violations: [] },
+        ];
+
+        const res = await addNewCarNumber({
+          ...userInfo,
+          ViolationsInfo: newViolations,
+        });
+
+        if (res?.Status === "SUCCEDED") {
+          if (userInfo) {
+            setUserInfo({
+              ...userInfo,
+              ViolationsInfo: newViolations,
+            });
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      handleClose();
+    }
   };
 
   const violations = userInfo?.ViolationsInfo.filter(
