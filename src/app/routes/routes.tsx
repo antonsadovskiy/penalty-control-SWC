@@ -1,6 +1,6 @@
 import { LoginPage } from "../../pages/auth/login";
 import { Layout } from "../layout";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { RegisterPage } from "../../pages/auth/register";
 import { MainPage } from "../../pages/main";
 import { LawPage } from "../../pages/law";
@@ -10,6 +10,7 @@ export const App = () => {
   return (
     <Routes>
       <Route path={`/`} element={<Layout />}>
+        <Route path={`/`} element={<Navigate to={"/auth/login"} />} />
         <Route path={`/auth/login`} element={<LoginPage />} index />
         <Route path={`/auth/register`} element={<RegisterPage />} />
 

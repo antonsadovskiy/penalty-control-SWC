@@ -2,8 +2,19 @@ import { useUserInfoStore } from "../../entities/userInfo/store.ts";
 import Avatar from "@mui/material/Avatar";
 import styles from "./lk.module.css";
 import { useTranslation } from "react-i18next";
-import { ViolationsTable } from "../../entities/violationsTable";
 import { Navigate } from "react-router-dom";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
+import { ViolationsTable } from "../../entities/violationsTable";
+import AddBoxIcon from "@mui/icons-material/AddBox";
 
 export const LkPage = () => {
   const [isLoggedIn, userInfo] = useUserInfoStore((state) => [
@@ -11,7 +22,37 @@ export const LkPage = () => {
     state.userInfo,
   ]);
 
+  const [registerNumber, setRegisterNumber] = useState("");
+  const [series, setSeries] = useState("");
+  const [region, setRegion] = useState(7);
+
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
+  const handleClose = () => {
+    setRegisterNumber("");
+    setSeries("");
+    setRegion(7);
+    setAddModalIsOpen(false);
+  };
+  const handleOpen = () => setAddModalIsOpen(true);
+
+  const [selectedCarNumber, setSelectedCarNumber] = useState("8892КВ-7");
+
   const { t } = useTranslation("lk");
+
+  const changeCarNumberHandler = (carNumber: string) => {
+    setSelectedCarNumber(carNumber);
+  };
+
+  const addCarNumberHandler = () => {
+    const fullNumber = `${registerNumber}${series}-${region}`;
+    console.log(fullNumber);
+  };
+
+  const violations = userInfo?.ViolationsInfo.filter(
+    (info) => info.CarNumber === selectedCarNumber,
+  );
+
+  const accountType = userInfo?.UserType === "DRIVER" ? "driver" : "owner";
 
   if (!isLoggedIn) {
     return <Navigate to={"/auth/login"} />;
@@ -25,21 +66,92 @@ export const LkPage = () => {
           variant={"square"}
           style={{ width: "200px", height: "200px" }}
         />
-        <div className={styles.info}>
-          <div className={styles.name}>
-            <b>{t("fullName")}:</b> {userInfo?.Surname} {userInfo?.Firstname}{" "}
-            {userInfo?.Middlename}
+        <div className={styles.infoWithButton}>
+          <div className={styles.info}>
+            <div className={styles.name}>
+              <span className={styles.boldText}>{t("fullName")}:</span>{" "}
+              {userInfo?.Surname} {userInfo?.Firstname} {userInfo?.Middlename}
+            </div>
+            <div>
+              <span className={styles.boldText}>{t("accountType")}:</span>{" "}
+              {t(accountType)}
+            </div>
+            <div className={styles.carNumber}>
+              <span className={styles.boldText}>{t("carNumber")}: </span>
+              <FormControl size={"small"}>
+                <Select
+                  value={selectedCarNumber}
+                  onChange={(e) => changeCarNumberHandler(e.target.value)}
+                >
+                  {userInfo?.ViolationsInfo.map((info) => (
+                    <MenuItem value={info.CarNumber}>{info.CarNumber}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
           <div>
-            <b>{t("carNumber")}: </b>
-            {userInfo?.CarNumber}
+            <IconButton color={"info"} onClick={handleOpen}>
+              <AddBoxIcon />
+            </IconButton>
+            <Modal
+              className={styles.modal}
+              open={addModalIsOpen}
+              onClose={handleClose}
+            >
+              <div className={styles.modalContent}>
+                <div className={styles.inputs}>
+                  <TextField
+                    onChange={(e) => setRegisterNumber(e.target.value)}
+                    value={registerNumber}
+                    label={"Регистрационный номер"}
+                    size={"small"}
+                    fullWidth
+                  />
+                  <TextField
+                    onChange={(e) => setSeries(e.target.value)}
+                    value={series}
+                    label={"Серия"}
+                    size={"small"}
+                    fullWidth
+                  />
+                  <TextField
+                    onChange={(e) => setRegion(parseInt(e.target.value))}
+                    value={region}
+                    type={"number"}
+                    label={"Код региона регистрации"}
+                    size={"small"}
+                    fullWidth
+                    InputProps={{ inputProps: { min: 1, max: 7 } }}
+                  />
+                </div>
+                <div className={styles.buttonContainer}>
+                  <Button
+                    onClick={handleClose}
+                    variant={"outlined"}
+                    size={"small"}
+                    color={"info"}
+                  >
+                    Отменить
+                  </Button>
+                  <Button
+                    onClick={addCarNumberHandler}
+                    variant={"contained"}
+                    size={"small"}
+                    color={"info"}
+                  >
+                    Добавить
+                  </Button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
-      <div className={styles.violationsTable}>
-        <div className={styles.yourPenalties}>Ваши нарушения</div>
+      <div>
+        <div className={styles.yourPenalties}>{t("yourPenalties")}</div>
         <ViolationsTable
-          violations={userInfo?.Violations ?? []}
+          violations={violations?.[0].Violations ?? []}
           height={"60"}
         />
       </div>

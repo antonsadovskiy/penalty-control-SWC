@@ -1,13 +1,16 @@
 import styles from "./register.module.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  FormControl,
   IconButton,
   InputAdornment,
   Link,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -20,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useRegister } from "../../../shared/api/hooks";
 
 export const RegisterPage = () => {
-  const { t } = useTranslation("auth");
+  const { t } = useTranslation(["auth", "lk"]);
 
   const { registerHandler } = useRegister();
 
@@ -30,14 +33,30 @@ export const RegisterPage = () => {
   const navigate = useNavigate();
 
   const {
+    setValue,
+    watch,
+    control,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormType>({
     resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      accountType: "PHYSICAL",
+      userType: "DRIVER",
+    },
   });
 
+  const accountType = watch("accountType");
+
+  useEffect(() => {
+    if (accountType === "PHYSICAL") {
+      setValue("companyName", "");
+    }
+  }, [setValue, accountType]);
+
   const onSubmit: SubmitHandler<RegisterFormType> = async (data) => {
+    console.log(data);
     try {
       const res = await registerHandler(data);
 
@@ -111,17 +130,55 @@ export const RegisterPage = () => {
                 )}
               </div>
               <div className={styles.field}>
-                <TextField
-                  label={t("carNumber")}
-                  fullWidth
-                  size={"small"}
-                  {...register("carNumber")}
-                  error={!!errors.carNumber}
+                <Controller
+                  control={control}
+                  name={"userType"}
+                  render={({ field }) => (
+                    <FormControl size={"small"} fullWidth>
+                      <Select {...field}>
+                        <MenuItem value="DRIVER">
+                          {t("driver", { ns: "lk" })}
+                        </MenuItem>
+                        <MenuItem value="OWNER">
+                          {t("owner", { ns: "lk" })}
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  )}
                 />
-                {errors.carNumber && (
-                  <span className={styles.warning}>
-                    {errors.carNumber.message}
-                  </span>
+              </div>
+              <div className={styles.field}>
+                <Controller
+                  control={control}
+                  name={"accountType"}
+                  render={({ field }) => (
+                    <FormControl size={"small"} fullWidth>
+                      <Select {...field}>
+                        <MenuItem value="PHYSICAL">
+                          {t("physicalPerson")}
+                        </MenuItem>
+                        <MenuItem value="LEGAL">{t("legalPerson")}</MenuItem>
+                      </Select>
+                    </FormControl>
+                  )}
+                />
+              </div>
+              <div className={styles.field}>
+                {accountType === "LEGAL" && (
+                  <div className={styles.field}>
+                    <TextField
+                      label={t("companyName")}
+                      fullWidth
+                      size={"small"}
+                      {...register("companyName")}
+                      error={!!errors.companyName}
+                    />
+                    {errors.companyName && (
+                      <span className={styles.warning}>
+                        {errors.companyName.message}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
             </div>

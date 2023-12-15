@@ -43,16 +43,19 @@ export const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
+    setIsLoggedIn(true);
+    navigate("/me");
     try {
       const res = await loginHandler(data);
 
       if (res?.Status === "SUCCEDED") {
         setUserInfo({
-          CarNumber: res.CarNumber,
+          Id: res.Id,
+          UserType: res.UserType,
           Firstname: res.Firstname,
           Middlename: res.Middlename,
           Surname: res.Surname,
-          Violations: res.Violations,
+          ViolationsInfo: res.ViolationsInfo,
         });
 
         setIsLoggedIn(true);
