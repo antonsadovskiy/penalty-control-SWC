@@ -30,3 +30,19 @@
 .menuItem:hover {
   cursor: pointer;
 }
+.additionalInfo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.popoverContent {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

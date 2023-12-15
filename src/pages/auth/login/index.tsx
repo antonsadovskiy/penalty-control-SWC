@@ -43,8 +43,6 @@ export const LoginPage = () => {
   });
 
   const onSubmit: SubmitHandler<LoginFormType> = async (data) => {
-    setIsLoggedIn(true);
-    navigate("/me");
     try {
       const res = await loginHandler(data);
 

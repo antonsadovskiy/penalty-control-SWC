@@ -74,4 +74,22 @@ export class Api {
       console.error(e);
     }
   }
+
+  public static async getNews() {
+    try {
+      return await fetch("http://localhost:3000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type: "GET_NEWS" }),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          console.error("Ошибка:", error);
+        });
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }
