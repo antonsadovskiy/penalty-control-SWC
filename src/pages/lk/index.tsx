@@ -124,7 +124,7 @@ export const LkPage = () => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>{" "}
+                  </FormControl>
                 </>
               )}
             </div>
