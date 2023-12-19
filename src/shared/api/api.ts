@@ -1,6 +1,6 @@
 import { LoginFormType } from "../../entities/loginForm/types.ts";
 import { RegisterFormType } from "../../entities/registerForm/types.ts";
-import { UserInfoType } from "./types.ts";
+import { AddNewCarNumberRequestType } from "./types.ts";
 
 export class Api {
   public static async login(data: LoginFormType) {
@@ -57,14 +57,14 @@ export class Api {
     }
   }
 
-  public static async addNewCarNumber(data: UserInfoType) {
+  public static async addNewCarNumber(data: AddNewCarNumberRequestType) {
     try {
       return await fetch("http://localhost:3000", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ...data, type: "ADD_NEW_CAR_NUMBER" }),
+        body: JSON.stringify({ ...data, Type: "ADD_NEW_CAR_NUMBER" }),
       })
         .then((response) => response.json())
         .catch((error) => {

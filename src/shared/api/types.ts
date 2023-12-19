@@ -36,3 +36,8 @@ export type UserInfoType = {
   // Violations - Массив нарушений на этот номер машины,
   // массив нарушений точно такой же, как у нас уже есть, IdViolation, Article, Paragraph
 };
+
+export type AddNewCarNumberRequestType = {
+  id: number;
+  CarNumber: string;
+};

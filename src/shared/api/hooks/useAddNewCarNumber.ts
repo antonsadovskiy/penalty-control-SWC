@@ -1,8 +1,8 @@
 import { Api } from "../api.ts";
-import { StatusType, UserInfoType } from "../types.ts";
+import { AddNewCarNumberRequestType, StatusType } from "../types.ts";
 
 export const useAddNewCarNumber = () => {
-  const addNewCarNumber = async (data: UserInfoType) => {
+  const addNewCarNumber = async (data: AddNewCarNumberRequestType) => {
     try {
       const response: StatusType = await Api.addNewCarNumber(data);
 

@@ -61,8 +61,8 @@ export const LkPage = () => {
         ];
 
         const res = await addNewCarNumber({
-          ...userInfo,
-          ViolationsInfo: newViolations,
+          id: userInfo.Id,
+          CarNumber: fullNumber,
         });
 
         if (res?.Status === "SUCCEDED") {
