@@ -56,7 +56,7 @@ export const LkPage = () => {
     try {
       if (userInfo) {
         const newViolations: InfoType[] = [
-          ...userInfo.ViolationsInfo,
+          ...(userInfo.ViolationsInfo ?? []),
           { CarNumber: fullNumber, Violations: [] },
         ];
 
@@ -190,7 +190,7 @@ export const LkPage = () => {
       <div>
         <div className={styles.yourPenalties}>{t("yourPenalties")}</div>
         <ViolationsTable
-          violations={violations?.[0].Violations ?? []}
+          violations={(violations?.[0] && violations?.[0].Violations) || []}
           height={"60"}
         />
       </div>
